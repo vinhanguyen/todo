@@ -11,7 +11,7 @@ public class StubTaskDao implements TaskDao {
     private String[] tasks = new String[]{"eat lunch", "read a book", "watch tv"};
 
     @Override
-    public List<Task> geTasks() throws DataAccessException {
+    public List<Task> getTasks() throws DataAccessException {
         // create a list that will hold Task objects
         List<Task> list = new ArrayList<>();
         
@@ -38,7 +38,7 @@ public class StubTaskDao implements TaskDao {
         
         // try to get tasks
         try {
-            list = taskDao.geTasks();
+            list = taskDao.getTasks();
         } catch (DataAccessException e) {
             // handle errors that occur during data access
         }
@@ -47,5 +47,10 @@ public class StubTaskDao implements TaskDao {
         for (Task task : list) {
             System.out.println("task: " + task.getDescription());
         }
+    }
+
+    @Override
+    public void createTask(Task task) throws DataAccessException {
+        throw new UnsupportedOperationException();
     }
 }

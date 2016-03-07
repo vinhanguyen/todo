@@ -20,7 +20,7 @@ public class MysqlTaskDao implements TaskDao {
     }
 
     @Override
-    public List<Task> geTasks() throws DataAccessException {
+    public List<Task> getTasks() throws DataAccessException {
         // sql query to select all rows from tasks table
         String sql = "select * from tasks";
         
@@ -49,5 +49,24 @@ public class MysqlTaskDao implements TaskDao {
         }
         // return list of Tasks
         return list;
+    }
+
+    @Override
+    public void createTask(Task task) throws DataAccessException {
+        // sql to insert row into tasks table
+        String sql = "insert into tasks (description) values (?)";
+        
+        // get connection and wrap sql in statement
+        try (Connection connection = dataSource.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            // replace ? placeholder in sql with task's description (string) 
+            preparedStatement.setString(1, task.getDescription());
+            
+            // execute sql
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            // catch any database errors, wrap in custom exception, and throw it 
+            throw new DataAccessException("Error creating task", e);
+        }
     }
 }

@@ -6,6 +6,21 @@
 
 <h1>Tasks</h1>
 
+<%-- display any errors in list --%>
+<c:if test="${not empty errors}">
+<ul>
+  <c:forEach var="error" items="${errors}">
+    <li>${error}</li>
+  </c:forEach>
+</ul>
+</c:if>
+
+<%-- form to submit task --%>
+<form action="<c:url value="/tasks" />" method="post">
+  <input type="text" name="description">
+  <input type="submit" value="Add">
+</form>
+
 <%-- create ordered list --%>
 <ol>
 <%-- use forEach tag to loop through tasks request attribute from servlet --%>

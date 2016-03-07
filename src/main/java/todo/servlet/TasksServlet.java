@@ -45,7 +45,7 @@ public class TasksServlet extends HttpServlet {
         // try to get list of tasks from dao
         List<Task> tasks = null;
         try {
-            tasks = taskDao.geTasks();
+            tasks = taskDao.getTasks();
         } catch (DataAccessException e) {
             logger.log(Level.WARNING, "Error getting tasks", e);
             // set list to empty list if dao throws exception
@@ -56,5 +56,28 @@ public class TasksServlet extends HttpServlet {
         
         // forward the request to the tasks.jsp page using the request's RequestDispatcher object
         req.getRequestDispatcher("/tasks.jsp").forward(req, resp);
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        // get description parameter from request object
+        String description = req.getParameter("description");
+        
+        // create instance of TaskDao
+        TaskDao dao = new MysqlTaskDao(dataSource);
+        
+        // create Task using description
+        Task task = new Task();
+        task.setDescription(description);
+        
+        // call create method on dao to insert Task
+        try {
+            dao.createTask(task);
+        } catch (DataAccessException e) {
+            // if error occurs while inserting task, add exception's message to request attribute to named error
+            req.setAttribute("errors", e.getMessage());
+        }
+        // redirect to /tasks so that doGet is invoked
+        resp.sendRedirect(req.getContextPath() + "/tasks");
     }
 }
