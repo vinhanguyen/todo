@@ -8,11 +8,7 @@
 
 <%-- display any errors in list --%>
 <c:if test="${not empty errors}">
-<ul>
-  <c:forEach var="error" items="${errors}">
-    <li>${error}</li>
-  </c:forEach>
-</ul>
+<p style="color: red;">${errors}</p>
 </c:if>
 
 <%-- form to submit task --%>
