@@ -4,7 +4,8 @@
 <head><title>Tasks</title></head>
 <body>
 
-<h1>Tasks</h1>
+<%-- display user request attribute set in servlet --%>
+<h1>${user}'s tasks</h1>
 
 <%-- display any errors in list --%>
 <c:if test="${not empty errors}">

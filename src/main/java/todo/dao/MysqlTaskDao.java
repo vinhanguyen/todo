@@ -20,9 +20,10 @@ public class MysqlTaskDao implements TaskDao {
     }
 
     @Override
-    public List<Task> getTasks() throws DataAccessException {
+    public List<Task> getTasks(String user) throws DataAccessException {
         // sql query to select all rows from tasks table
-        String sql = "select * from tasks";
+        // where the user_name column matches the passed in user (String)
+        String sql = "select * from tasks where user_name = ?";
         
         // create list to hold Task objects
         List<Task> list = new ArrayList<>();
@@ -30,6 +31,9 @@ public class MysqlTaskDao implements TaskDao {
         // get connection from datasource and create statement representing sql query to execute
         try (Connection connection = dataSource.getConnection();
                 PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            // replaced placeholder ? with passed in user
+            preparedStatement.setString(1, user);
+            
             // execute query to get resultset (rows)
             ResultSet resultSet = preparedStatement.executeQuery();
             
@@ -52,15 +56,17 @@ public class MysqlTaskDao implements TaskDao {
     }
 
     @Override
-    public void createTask(Task task) throws DataAccessException {
+    public void createTask(Task task, String user) throws DataAccessException {
         // sql to insert row into tasks table
-        String sql = "insert into tasks (description) values (?)";
+        String sql = "insert into tasks (description, user_name) values (?, ?)";
         
         // get connection and wrap sql in statement
         try (Connection connection = dataSource.getConnection();
                 PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-            // replace ? placeholder in sql with task's description (string) 
+            // replace ? placeholder in sql with task's description (string)
+            // and user
             preparedStatement.setString(1, task.getDescription());
+            preparedStatement.setString(2, user);
             
             // execute sql
             preparedStatement.executeUpdate();

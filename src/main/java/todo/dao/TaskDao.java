@@ -6,6 +6,6 @@ import todo.model.Task;
 
 public interface TaskDao {
 
-    void createTask(Task task) throws DataAccessException;
-    List<Task> getTasks() throws DataAccessException;
+    void createTask(Task task, String user) throws DataAccessException;
+    List<Task> getTasks(String user) throws DataAccessException;
 }

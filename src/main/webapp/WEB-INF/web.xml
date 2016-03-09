@@ -6,6 +6,21 @@
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>TasksServlet</servlet-name>
-		<url-pattern>/tasks</url-pattern>
+		<url-pattern>/tasks/*</url-pattern>
 	</servlet-mapping>
+	<security-constraint>
+		<web-resource-collection>
+			<web-resource-name>tasks</web-resource-name>
+			<url-pattern>/tasks/*</url-pattern>
+		</web-resource-collection>
+		<auth-constraint>
+			<role-name>user</role-name>
+		</auth-constraint>
+	</security-constraint>
+	<login-config>
+		<auth-method>BASIC</auth-method>
+	</login-config>
+	<security-role>
+		<role-name>user</role-name>
+	</security-role>
 </web-app>
