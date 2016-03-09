@@ -6,7 +6,7 @@
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>TasksServlet</servlet-name>
-		<url-pattern>/tasks/*</url-pattern>
+		<url-pattern>/tasks</url-pattern>
 	</servlet-mapping>
 	<security-constraint>
 		<web-resource-collection>
