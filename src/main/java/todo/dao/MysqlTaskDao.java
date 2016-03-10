@@ -41,6 +41,8 @@ public class MysqlTaskDao implements TaskDao {
             while (resultSet.next()) {
                 // create Task object
                 Task task = new Task();
+                // set its id
+                task.setId(resultSet.getInt("id"));
                 // set its description
                 task.setDescription(resultSet.getString("description"));
                 
@@ -73,6 +75,26 @@ public class MysqlTaskDao implements TaskDao {
         } catch (SQLException e) {
             // catch any database errors, wrap in custom exception, and throw it 
             throw new DataAccessException("Error creating task", e);
+        }
+    }
+
+    @Override
+    public void deleteTask(int id) throws DataAccessException {
+        // sql statement to delete rows in tasks table 
+        // where the id column is equal to the passed in id (int)
+        String sql = "delete from tasks where id = ?";
+        
+        // get connection and wrap sql in statement
+        try (Connection connection = dataSource.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            // replace ? placeholder in sql with id of task to delete
+            preparedStatement.setInt(1, id);
+            
+            // execute sql
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            // catch any database errors, wrap in custom exception, and throw it 
+            throw new DataAccessException("Error deleting task", e);
         }
     }
 }

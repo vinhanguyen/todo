@@ -8,6 +8,14 @@
 		<servlet-name>TasksServlet</servlet-name>
 		<url-pattern>/tasks</url-pattern>
 	</servlet-mapping>
+	<servlet>
+		<servlet-name>DeleteTaskServlet</servlet-name>
+		<servlet-class>todo.servlet.DeleteTaskServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>DeleteTaskServlet</servlet-name>
+		<url-pattern>/tasks/delete</url-pattern>
+	</servlet-mapping>
 	<security-constraint>
 		<web-resource-collection>
 			<web-resource-name>tasks</web-resource-name>
