@@ -42,12 +42,15 @@ public class DeleteTaskServlet extends HttpServlet {
             // this method will throw a NumberFormatException if its parameter cannot be converted into an int
             int id = Integer.parseInt(idParam);
             
+            // get logged in user
+            String user = req.getRemoteUser();
+            
             // create instance of task dao
             TaskDao taskDao = new MysqlTaskDao(dataSource);
             
-            // call deleteTask method passing in the id (int)
+            // call deleteTask method passing in the id (int) and user (string)
             // this method throws a DataAccessException if the delete fails
-            taskDao.deleteTask(id);
+            taskDao.deleteTask(id, user);
         } catch (Exception e) {
             // catch any exceptions that are subclasses of the Exception class
             // this will catch either NumberFormatException or DataAccessException 

@@ -23,7 +23,8 @@
 <%-- use forEach tag to loop through tasks request attribute from servlet --%>
 <c:forEach var="task" items="${tasks}">
   <li>
-  ${task.description}<%-- print current task's description --%>
+  <%-- print current task's description --%>
+  <a href="<c:url value="/tasks/edit"><c:param name="id" value="${task.id}" /></c:url>">${task.description}</a>
   <%-- create form that submits id of task to delete --%>
   <form action="<c:url value="/tasks/delete" />" method="post" style="display: inline;">
     <input type="hidden" name="id" value="${task.id}">
