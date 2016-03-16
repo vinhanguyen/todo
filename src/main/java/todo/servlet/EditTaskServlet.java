@@ -1,6 +1,8 @@
 package todo.servlet;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -65,6 +67,28 @@ public class EditTaskServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        // validate request
+        List<String> errors = validate(req);
+        
+        // if there were any errors
+        if (!errors.isEmpty()) {
+            // put Task back into request for user to modify in jsp
+            Task task = new Task();
+            task.setId(Integer.parseInt(req.getParameter("id")));
+            task.setDescription(req.getParameter("description"));
+            req.setAttribute("task", task);
+            
+            // also add error messages to display to user in jsp
+            req.setAttribute("errors", errors);
+            
+            // forward to jsp
+            req.getRequestDispatcher("/edit.jsp").forward(req, resp);
+            
+            // need to return to exit otherwise following code will execute
+            return;
+        }
+        
+        // if we reach this point, form submission is valid so update it
         try {
             // get posted form parameters
             String idParam = req.getParameter("id");
@@ -93,5 +117,21 @@ public class EditTaskServlet extends HttpServlet {
         
         // redirect the user to the tasks list
         resp.sendRedirect(req.getContextPath()+"/tasks");
+    }
+    
+    private List<String> validate(HttpServletRequest req) {
+        // make list of errors
+        List<String> errors = new ArrayList<>();
+        
+        // get description
+        String description = req.getParameter("description");
+        
+        // if description not provided or provided but not matches 1-100 characters (.)
+        if (description == null || !description.matches("^.{1,100}$")) {
+            errors.add("Description is required and cannot exceed 100 characters.");
+        }
+        
+        // return errors
+        return errors;
     }
 }
